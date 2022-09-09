@@ -78,40 +78,28 @@ PATCH /api/v1/titles/{title_id}/reviews/{review_id}/comments/
 }
 
 
-### Запуск контейнера с приложенем
+### Запуск контейнера с приложением
 
+##### 1. Установить [Docker] (https://www.docker.com/get-started) и [Docker-compose] (https://docs.docker.com/compose/install/)
 
-##### 1. Перейти в репозиторий для запуска докера
-
+##### 2. Клонировать репозиторий:
+```bash
+git clone 'git@github.com:eduvxn/infra_sp2.git'
 ```
+
+##### 3. Перейти в папку infra, создать файл .env с переменными окружения для работы с базой данных
+
+```bash
 cd infra/
 ```
-
-##### 2. Запустить docker-compose
-
+```bash
+touch .env
 ```
-docker-compose up -d --build
-```
-
-##### 3. Выполнить команды для базы данных, создания суперпользователя, собрать файлы static
-```
-docker-compose exec web python manage.py migrate
-docker-compose exec web python manage.py createsuperuser
-docker-compose exec web python manage.py collectstatic --no-input
+```bash
+nano .env
 ```
 
-#### Для создания резервной копии базы данных использовать команду:
-
-```
-docker-compose exec web python manage.py dumpdata > fixtures.json
-```
-
-#### Загрузить данные из fixtures в базу данных
-```
-python manage.py loaddata fixtures.json
-```
-
-#### Шаблон наполнения env-файла
+##### Шаблон наполнения env-файла
 
 ```
 DB_ENGINE=django.db.backends.postgresql
@@ -122,6 +110,24 @@ DB_HOST=db
 DB_PORT=5432
 SECRET_KEY=pvs123qwr13)
 ```
+##### 4. Собрать контейнеры
+
+```bash
+docker-compose up -d
+```
+
+##### 5. Из контейнера web запустить миграции, создать суперпользователя и собрать статические файлы:
+```bash
+docker ps # необходимо скопировать у web CONTAINER ID
+```
+```bash
+docker exec -it <CONTAINER ID> /bin/bash # Необходимо зайти в командную строку контейнера web
+python manage.py migrate # Выполнить миграции
+python manage.py createsuperuser # Создать суперпользователя
+python manage.py collectstatic --no-input # Собрать статические файлы
+exit # Выйти из командной строки контейнера
+```
+##### 6. Проект доступен по адресу  http://localhost/
 
 ## Технологии
 
