@@ -98,29 +98,15 @@ PATCH /api/v1/titles/{title_id}/reviews/{review_id}/comments/
 git clone 'git@github.com:eduvxn/infra_sp2.git'
 ```
 
-##### 3. Перейти в папку infra, создать файл .env с переменными окружения для работы с базой данных
+##### 3. Подменить в файле .env.example данные примера на собственные и сохранить с названием .env
 
 ```bash
 cd infra/
 ```
 ```bash
-touch .env
-```
-```bash
-nano .env
+nano .env.exaple
 ```
 
-##### Шаблон наполнения env-файла
-
-```
-DB_ENGINE=django.db.backends.postgresql
-DB_NAME=postgres
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
-DB_HOST=db
-DB_PORT=5432
-SECRET_KEY=pvs123qwr13)
-```
 ##### 4. Собрать контейнеры
 
 ```bash
